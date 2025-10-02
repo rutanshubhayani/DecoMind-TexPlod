@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TEXplods Home Decor</title>
+    <meta name="description" content="Beautiful, affordable home decoration items with responsive design." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+    <script src="profile-menu.js" defer></script>
+    <script src="script.js" defer></script>
+    <script src="auth.js" defer></script>
+    <script src="smooth-scroll.js" defer></script>
+</head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="#">DecoMind</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+        <nav class="site-nav" id="siteNav" aria-label="Primary">
+          <ul>
+            <li><a href="#products">Shop</a></li>
+            <li><a href="#tips">Tips</a></li>
+            <li><a href="#newsletter">Newsletter</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="icon-btn" id="wishlistBtn" aria-label="Wishlist">
+            <span>❤</span>
+            <span class="badge" id="wishlistCount">0</span>
+          </button>
+          <button class="icon-btn" id="cartBtn" aria-label="Cart">
+            <span>🛍️</span>
+            <span class="badge" id="cartCount">0</span>
+          </button>
+          <profile-menu></profile-menu>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <h1>Refresh your home with modern decor</h1>
+            <p>Curated pieces to elevate every room — from cozy rugs to statement lighting.</p>
+            <a href="#products" class="btn primary">Browse Collection</a>
+          </div>
+          <div class="hero-media" aria-hidden="true">
+            <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1600&auto=format&fit=crop" alt="Stylish living room" />
+          </div>
+        </div>
+      </section>
+
+      <section class="filters" aria-labelledby="filtersTitle">
+        <div class="container">
+          <div class="filters-bar">
+            <h2 id="filtersTitle">Find your style</h2>
+            <div class="filters-controls">
+              <label class="field">
+                <span class="label">Search</span>
+                <input type="search" id="searchInput" placeholder="e.g. rug, lamp, vase" />
+              </label>
+              <label class="field">
+                <span class="label">Category</span>
+                <select id="categorySelect">
+                  <option value="all">All</option>
+                  <option value="lighting">Lighting</option>
+                  <option value="textiles">Textiles</option>
+                  <option value="wall-art">Wall Art</option>
+                  <option value="plants">Plants</option>
+                  <option value="storage">Storage</option>
+                  <option value="decor">Decor</option>
+                </select>
+              </label>
+              <label class="field range-field">
+                <span class="label">Max Price: $<span id="priceValue">300</span></span>
+                <input type="range" id="priceRange" min="10" max="300" step="10" value="300" />
+              </label>
+              <label class="field">
+                <span class="label">Sort</span>
+                <select id="sortSelect">
+                  <option value="featured">Featured</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="name-asc">Name: A → Z</option>
+                </select>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="products" class="products" aria-labelledby="productsTitle">
+        <div class="container">
+          <div class="section-head">
+            <h2 id="productsTitle">Popular Home Decoration</h2>
+            <p>Handpicked favorites to transform your space.</p>
+          </div>
+          <div id="productGrid" class="grid" role="list" aria-live="polite"></div>
+          
+        </div>
+      </section>
+
+      <section id="tips" class="tips" aria-labelledby="tipsTitle">
+        <div class="container">
+          <div class="section-head">
+            <h2 id="tipsTitle">Decorating Tips</h2>
+            <p>Quick wins for a more beautiful home.</p>
+          </div>
+          <div class="tips-grid">
+            <article class="tip">
+              <h3>Layer textures</h3>
+              <p>Combine woods, metals, and soft textiles to add depth and warmth.</p>
+            </article>
+            <article class="tip">
+              <h3>Rule of three</h3>
+              <p>Style shelves and tables using grouped trios for pleasing symmetry.</p>
+            </article>
+            <article class="tip">
+              <h3>Lighting matters</h3>
+              <p>Use a mix of ambient, task, and accent lighting for balance.</p>
+            </article>
+            <article class="tip">
+              <h3>Go green</h3>
+              <p>Plants bring color, texture, and better air to your rooms.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="newsletter" class="newsletter" aria-labelledby="newsletterTitle">
+        <div class="container newsletter-inner">
+          <div>
+            <h2 id="newsletterTitle">Get 10% off your first order</h2>
+            <p>Join our list for exclusive deals and weekly styling ideas.</p>
+          </div>
+          <form class="newsletter-form" id="newsletterForm" novalidate>
+            <label class="sr-only" for="emailInput">Email</label>
+            <input id="emailInput" type="email" placeholder="you@example.com" required />
+            <button class="btn primary" type="submit">Subscribe</button>
+            <p class="form-msg" id="newsletterMsg" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+    
+    <div id="overlay" class="overlay" hidden></div>
+    
+    <aside id="wishlistDrawer" class="drawer" aria-hidden="true" aria-labelledby="wishlistTitle" role="dialog">
+      <div class="drawer-header">
+        <h3 id="wishlistTitle">Wishlist</h3>
+        <button class="btn-icon drawer-close" data-drawer-close>✕</button>
+      </div>
+      <div class="drawer-body">
+        <ul id="wishlistList" class="drawer-list"></ul>
+      </div>
+      <div class="drawer-footer">
+        <button id="clearWishlist" class="btn">Clear Wishlist</button>
+      </div>
+    </aside>
+
+    <aside id="cartDrawer" class="drawer" aria-hidden="true" aria-labelledby="cartTitle" role="dialog">
+      <div class="drawer-header">
+        <h3 id="cartTitle">Cart</h3>
+        <button class="btn-icon drawer-close" data-drawer-close>✕</button>
+      </div>
+      <div class="drawer-body">
+        <ul id="cartList" class="drawer-list"></ul>
+      </div>
+      <div class="drawer-footer">
+        <div class="totals"><span>Total:</span><strong id="cartTotal">$0</strong></div>
+        <button id="checkoutBtn" class="btn primary">Checkout</button>
+        <button id="clearCart" class="btn">Clear Cart</button>
+      </div>
+    </aside>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>© <span id="year"></span> TEXplods • Made with ❤️ for beautiful spaces</p>
+        <nav aria-label="Footer">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Contact</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="script.js" defer></script>
+    <script src="auth.js"></script>
+    <script src="smooth-scroll.js"></script>
+  </body>
+</html>
+
+

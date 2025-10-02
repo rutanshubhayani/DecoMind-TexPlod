@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin • TEXplodes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="checkAuth.js" defer></script>
+    <script src="profile-menu.js" defer></script>
+    <style>
+      :root {
+        --primary: #7c3aed;
+        --primary-light: #8b5cf6;
+        --primary-dark: #6d28d9;
+        --secondary: #10b981;
+        --danger: #ef4444;
+        --warning: #f59e0b;
+        --dark: #1e293b;
+        --darker: #0f172a;
+        --light: #f8fafc;
+        --muted: #94a3b8;
+        --border: #334155;
+        --panel: rgba(30, 41, 59, 0.7);
+        --success: #10b981;
+        --text: #e2e8f0;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+        color: var(--text);
+        min-height: 100vh;
+        line-height: 1.6;
+      }
+      
+      .admin-wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      
+      .admin-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      
+      .admin-head h1 {
+        font-size: 28px;
+        font-weight: 700;
+        background: linear-gradient(to right, var(--primary), var(--primary-light));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+      }
+      
+      .btn-group {
+        display: flex;
+        gap: 12px;
+      }
+      
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border: none;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+      }
+      
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+      }
+      
+      .btn-primary:hover {
+        background: var(--primary-light);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+      }
+      
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+      
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+      }
+      
+      .btn-danger {
+        background: var(--danger);
+        color: white;
+      }
+      
+      .btn-danger:hover {
+        background: #dc2626;
+        transform: translateY(-2px);
+      }
+      
+      .btn-success {
+        background: var(--success);
+        color: white;
+      }
+      
+      .btn-success:hover {
+        background: #059669;
+        transform: translateY(-2px);
+      }
+      
+      .admin-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        backdrop-filter: blur(10px);
+      }
+      
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      
+      .panel-header h2 {
+        font-size: 20px;
+        font-weight: 600;
+      }
+      
+      .muted {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      
+      .form-group label {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      
+      .form-control {
+        background: rgba(15, 23, 42, 0.6);
+        color: var(--text);
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        padding: 10px 12px;
+        width: 100%;
+        transition: all 0.2s ease;
+      }
+      
+      .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+      }
+      
+      .file-input-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        width: 100%;
+      }
+      
+      .file-input-wrapper input[type=file] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+      }
+      
+      .file-input-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 12px;
+        background: rgba(15, 23, 42, 0.6);
+        color: var(--text);
+        border-radius: 8px;
+        border: 1px dashed var(--border);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: center;
+      }
+      
+      .file-input-label:hover {
+        border-color: var(--primary);
+        background: rgba(15, 23, 42, 0.8);
+      }
+      
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+      }
+      
+      thead {
+        background: rgba(15, 23, 42, 0.8);
+      }
+      
+      th {
+        text-align: left;
+        padding: 12px 16px;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--muted);
+        border-bottom: 1px solid var(--border);
+      }
+      
+      td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+      }
+      
+      tr:last-child td {
+        border-bottom: none;
+      }
+      
+      tr:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+      
+      .row-actions {
+        display: flex;
+        gap: 8px;
+      }
+      
+      .action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text);
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      
+      .action-btn:hover {
+        background: var(--primary);
+        transform: scale(1.1);
+      }
+      
+      .action-btn.delete:hover {
+        background: var(--danger);
+      }
+      
+      .image-preview {
+        width: 40px;
+        height: 40px;
+        border-radius: 6px;
+        object-fit: cover;
+        border: 1px solid var(--border);
+      }
+      
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        background: rgba(124, 58, 237, 0.2);
+        color: var(--primary-light);
+      }
+      
+      .category-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        background: rgba(16, 185, 129, 0.2);
+        color: var(--success);
+      }
+      
+      .price {
+        font-weight: 600;
+        color: var(--success);
+      }
+      
+      .status-message {
+        padding: 10px 16px;
+        border-radius: 8px;
+        margin-top: 16px;
+        font-size: 14px;
+        display: none;
+      }
+      
+      .status-success {
+        background: rgba(16, 185, 129, 0.2);
+        color: var(--success);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
+      
+      .status-error {
+        background: rgba(239, 68, 68, 0.2);
+        color: var(--danger);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+      
+      .status-info {
+        background: rgba(59, 130, 246, 0.2);
+        color: #3b82f6;
+        border: 1px solid rgba(59, 130, 246, 0.3);
+      }
+      
+      tr.dirty {
+        background: rgba(245, 158, 11, 0.1);
+      }
+      
+      .table-container {
+        overflow-x: auto;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+      
+      .editable-input {
+        background: transparent;
+        border: 1px solid transparent;
+        color: var(--text);
+        padding: 4px 8px;
+        border-radius: 4px;
+        width: 100%;
+        font-family: inherit;
+        font-size: inherit;
+      }
+      
+      .editable-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: rgba(15, 23, 42, 0.6);
+      }
+      
+      .editable-select {
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 4px 8px;
+        border-radius: 4px;
+        width: 100%;
+        font-family: inherit;
+        font-size: inherit;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .admin-head {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+        }
+        
+        .btn-group {
+          width: 100%;
+          justify-content: space-between;
+        }
+        
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        table {
+          display: block;
+          overflow-x: auto;
+        }
+        
+        .row-actions {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="admin-wrap">
+      <div class="admin-head">
+        <h1>Admin Dashboard</h1>
+        <div class="btn-group">
+          <profile-menu></profile-menu>
+          <a class="btn btn-secondary" href="index.html">
+            <i class="fas fa-arrow-left"></i> Back to site
+          </a>
+          <button id="seedBtn" class="btn btn-primary">
+            <i class="fas fa-seedling"></i> Seed sample products
+          </button>
+        </div>
+      </div>
+
+      <div class="admin-grid">
+        <section class="panel">
+          <div class="panel-header">
+            <h2><i class="fas fa-box-open"></i> Products</h2>
+          </div>
+          
+      
+          
+          <div class="form-grid" id="productForm">
+            <div class="form-group">
+              <label for="pName">Product Name</label>
+              <input class="form-control" id="pName" placeholder="Enter product name" />
+            </div>
+            
+            <div class="form-group">
+              <label for="pPrice">Price ($)</label>
+              <input class="form-control" id="pPrice" type="number" step="0.01" placeholder="0.00" />
+            </div>
+            
+            <div class="form-group">
+              <label for="pCategory">Category</label>
+              <select class="form-control" id="pCategory">
+                <option value="">Select category</option>
+                <option value="lighting">Lighting</option>
+                <option value="textiles">Textiles</option>
+                <option value="wall-art">Wall Art</option>
+                <option value="plants">Plants</option>
+                <option value="storage">Storage</option>
+                <option value="decor">Decor</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="pBadge">Badge</label>
+              <input class="form-control" id="pBadge" placeholder="Optional badge" />
+            </div>
+            
+            <div class="form-group">
+              <label for="pImage">Image URL</label>
+              <input class="form-control" id="pImage" placeholder="Image URL (optional)" />
+            </div>
+            
+            <div class="form-group">
+              <label>Upload Image</label>
+              <div class="file-input-wrapper">
+                <input id="pImageFile" type="file" accept="image/*" />
+                <div class="file-input-label">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <span>Choose File</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <button id="createBtn" class="btn btn-success" style="width: 100%;">
+                <i class="fas fa-plus"></i> Create Product
+              </button>
+            </div>
+          </div>
+          
+          <div class="status-message" id="formMsg"></div>
+          
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Category</th>
+                  <th>Badge</th>
+                  <th>Image</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="productsTbody">
+                <!-- Data will be populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      // API Configuration
+      let API_BASE = 'http://localhost:8080';
+      try {
+        const qp = new URLSearchParams(location.search);
+        const override = qp.get('api');
+        if (override) API_BASE = override;
+      } catch {}
+
+      // DOM Elements
+      const tbody = document.getElementById('productsTbody');
+      const formMsg = document.getElementById('formMsg');
+      const productNames = document.getElementById('productNames');
+      const productCount = document.getElementById('productCount');
+      const pName = document.getElementById('pName');
+      const pPrice = document.getElementById('pPrice');
+      const pCategory = document.getElementById('pCategory');
+      const pBadge = document.getElementById('pBadge');
+      const pImage = document.getElementById('pImage');
+      const pImageFile = document.getElementById('pImageFile');
+      const createBtn = document.getElementById('createBtn');
+      const seedBtn = document.getElementById('seedBtn');
+
+      // Utility Functions
+      function showMsg(text, ok = true) {
+        formMsg.textContent = text;
+        formMsg.className = 'status-message ' + (ok ? 'status-success' : 'status-error');
+        formMsg.style.display = 'block';
+        
+        setTimeout(() => {
+          formMsg.style.display = 'none';
+        }, 3000);
+      }
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"]+/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+      }
+
+      // API Functions
+      function fetchProducts() {
+        return fetch(`${API_BASE}/api/products`)
+          .then(r => { 
+            if (!r.ok) throw new Error(`HTTP ${r.status} ${r.statusText}`); 
+            return r.json(); 
+          });
+      }
+
+      function renderRows(rows) {
+        tbody.innerHTML = '';
+        if (!rows || rows.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" class="muted" style="text-align:center;padding:20px;">No products found.</td></tr>';
+          if (productNames) productNames.textContent = '';
+          if (productCount) productCount.textContent = '0 products';
+          return;
+        }
+        
+        if (productNames) {
+          const names = rows.map(p => p.name).join(', ');
+          productNames.textContent = `Current products: ${names}`;
+        }
+        
+        if (productCount) {
+          productCount.textContent = `${rows.length} product${rows.length !== 1 ? 's' : ''}`;
+        }
+        
+        const fragment = document.createDocumentFragment();
+        rows.forEach(p => {
+          const tr = document.createElement('tr');
+          
+          // Format the price
+          const formattedPrice = parseFloat(p.price).toFixed(2);
+          
+          tr.innerHTML = `
+            <td>${p.id}</td>
+            <td>
+              <input class="editable-input" data-f="name" value="${escapeHtml(p.name)}"/>
+            </td>
+            <td>
+              <input class="editable-input" data-f="price" type="number" step="0.01" value="${formattedPrice}">
+            </td>
+            <td>
+              <select class="editable-select" data-f="category">
+                ${['lighting','textiles','wall-art','plants','storage','decor'].map(c => 
+                  `<option value="${c}" ${p.category===c?'selected':''}>${c}</option>`
+                ).join('')}
+              </select>
+            </td>
+            <td>
+              <input class="editable-input" data-f="badge" value="${escapeHtml(p.badge || '')}">
+            </td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                ${p.image ? `<img class="image-preview" src="${p.image}" alt="${p.name}" />` : ''}
+                <input class="editable-input" data-f="image" value="${escapeHtml(p.image || '')}" placeholder="Image URL" style="flex:1;" />
+                <input type="file" accept="image/*" style="display:none;" />
+              </div>
+            </td>
+            <td>
+              <div class="row-actions">
+                <button class="action-btn" data-save="${p.id}" title="Save">
+                  <i class="fas fa-save"></i>
+                </button>
+                <button class="action-btn delete" data-delete="${p.id}" title="Delete">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          `;
+          fragment.appendChild(tr);
+        });
+        tbody.appendChild(fragment);
+      }
+
+      function createProduct() {
+        const { name, price, category, badge, image } = getFormPayloadBasic();
+        if (!name || !price || !category || (!image && !pImageFile.files[0])) { 
+          showMsg('Please provide all required fields and an image URL or file', false); 
+          return; 
+        }
+        
+        const form = new FormData();
+        form.append('name', name);
+        form.append('price', price);
+        form.append('category', category);
+        form.append('badge', badge || '');
+        if (image) form.append('image', image);
+        if (pImageFile.files[0]) form.append('imageFile', pImageFile.files[0]);
+        
+        fetch(`${API_BASE}/api/products`, { method: 'POST', body: form })
+          .then(r => { 
+            if (!r.ok) throw new Error('Create failed'); 
+            return r.json(); 
+          })
+          .then(() => { 
+            showMsg('Product created successfully'); 
+            resetForm(); 
+            return fetchProducts(); 
+          })
+          .then(renderRows)
+          .catch(() => showMsg('Failed to create product', false));
+      }
+
+      function saveProduct(id, row) {
+        const payload = getRowPayload(row);
+        if (!payload) return;
+        
+        const form = new FormData();
+        form.append('name', payload.name);
+        form.append('price', payload.price);
+        form.append('category', payload.category);
+        form.append('badge', payload.badge || '');
+        if (payload.image && typeof payload.image === 'string') form.append('image', payload.image);
+        
+        const fileInput = row.querySelector('input[type="file"]');
+        if (fileInput && fileInput.files[0]) form.append('imageFile', fileInput.files[0]);
+        
+        fetch(`${API_BASE}/api/products/${id}`, { method: 'PUT', body: form })
+          .then(r => { 
+            if (!r.ok) throw new Error('Save failed'); 
+            return r.json(); 
+          })
+          .then(() => { 
+            showMsg('Product updated successfully'); 
+            return fetchProducts(); 
+          })
+          .then(renderRows)
+          .catch(() => showMsg('Failed to update product', false));
+      }
+
+      function deleteProduct(id) {
+        if (!confirm('Are you sure you want to delete this product?')) return;
+        
+        fetch(`${API_BASE}/api/products/${id}`, { method: 'DELETE' })
+          .then(r => { 
+            if (!r.ok) throw new Error('Delete failed'); 
+            return r.json(); 
+          })
+          .then(() => { 
+            showMsg('Product deleted successfully'); 
+            return fetchProducts(); 
+          })
+          .then(renderRows)
+          .catch(() => showMsg('Failed to delete product', false));
+      }
+
+      function getFormPayloadBasic() {
+        const name = pName.value.trim();
+        const price = Number(pPrice.value);
+        const category = pCategory.value;
+        const badge = pBadge.value.trim();
+        const image = pImage.value.trim();
+        
+        if (!name || !category || !price) { 
+          showMsg('Please fill in all required fields', false); 
+          return {}; 
+        }
+        
+        return { name, price, category, badge, image };
+      }
+
+      function resetForm() {
+        pName.value = '';
+        pPrice.value = '';
+        pCategory.value = '';
+        pBadge.value = '';
+        pImage.value = '';
+        pImageFile.value = '';
+      }
+
+      function getRowPayload(tr) {
+        const data = {};
+        tr.querySelectorAll('input, select').forEach(el => {
+          const key = el.getAttribute('data-f');
+          if (!key) return;
+          data[key] = el.type === 'number' ? Number(el.value) : el.value.trim();
+        });
+        
+        if (!data.name || !data.category || !data.price) { 
+          showMsg('Please fill all required fields in the row', false); 
+          return null; 
+        }
+        
+        return data;
+      }
+
+      function attachHandlers() {
+        createBtn.addEventListener('click', createProduct);
+        
+        if (seedBtn) {
+          seedBtn.addEventListener('click', () => {
+            fetch(`${API_BASE}/api/seed`, { method: 'POST' })
+              .then(r => { 
+                if (!r.ok) throw new Error('Seed failed'); 
+                return r.json(); 
+              })
+              .then(() => fetchProducts())
+              .then(renderRows)
+              .then(() => showMsg('Sample products seeded successfully'))
+              .catch(() => showMsg('Failed to seed sample products', false));
+          });
+        }
+        
+        tbody.addEventListener('click', (e) => {
+          const saveId = e.target.closest('[data-save]')?.getAttribute('data-save');
+          const delId = e.target.closest('[data-delete]')?.getAttribute('data-delete');
+          
+          if (saveId) {
+            const row = e.target.closest('tr');
+            saveProduct(Number(saveId), row);
+          } else if (delId) {
+            deleteProduct(Number(delId));
+          }
+        });
+      }
+
+      function logout() {
+        console.log('Logout function triggered');
+        console.log('Current auth state:', {
+          token: localStorage.getItem('token'),
+          user: localStorage.getItem('user')
+        });
+        
+        // Clear authentication data
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        
+        console.log('Auth state after logout:', {
+          token: localStorage.getItem('token'),
+          user: localStorage.getItem('user')
+        });
+        
+        console.log('Redirecting to login page...');
+        // Redirect to login page
+        window.location.href = '/login.html';
+      }
+
+      function init() {
+        attachHandlers();
+        // Add logout button handler
+        const logoutBtn = document.querySelector('.btn-danger');
+        console.log('Found logout button:', logoutBtn);
+        if (logoutBtn) {
+          console.log('Adding click handler to logout button');
+          logoutBtn.addEventListener('click', logout);
+        } else {
+          console.error('Logout button not found in the document');
+        }
+        fetchProducts()
+          .then(renderRows)
+          .catch((err) => {
+            console.error('Failed to load products from', `${API_BASE}/api/products`, err);
+            showMsg('Failed to load products. Make sure the server is running.', false);
+          });
+      }
+
+      // Initialize when DOM is loaded
+      document.addEventListener('DOMContentLoaded', init);
+    </script>
+  </body>
+</html>
