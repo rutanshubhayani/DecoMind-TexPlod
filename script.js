@@ -1,8 +1,8 @@
 // TEXplods Home Decor - Interactivity
 let products = [];
 let API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-  ? 'https://decomind-texplod.onrender.com'
-  : 'https://decomind-texplod.onrender.com'; // Replace this with your deployed backend URL
+  ? 'http://localhost:8080'
+  : 'YOUR_DEPLOYED_BACKEND_URL'; // Replace this with your deployed backend URL
 try {
   const qp = new URLSearchParams(location.search);
   const override = qp.get('api');

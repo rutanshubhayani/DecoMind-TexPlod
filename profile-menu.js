@@ -302,10 +302,7 @@ class ProfileMenu extends HTMLElement {
         const password = form.querySelector('#confirmPassword').value;
 
         try {
-            const apiBase = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                ? 'https://decomind-texplod.onrender.com'
-                : 'https://decomind-texplod.onrender.com';
-            const response = await fetch(`${apiBase}/auth/update-profile`, {
+            const response = await fetch('http://localhost:8080/auth/update-profile', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -367,7 +364,7 @@ class ProfileMenu extends HTMLElement {
         }
 
         try {
-            const response = await fetch(`${apiBase}/auth/change-password`, {
+            const response = await fetch('http://localhost:8080/auth/change-password', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

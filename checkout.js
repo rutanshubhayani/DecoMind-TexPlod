@@ -1,6 +1,4 @@
-let API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? 'https://decomind-texplod.onrender.com'
-  : 'https://decomind-texplod.onrender.com';
+let API_BASE = 'http://localhost:8080';
 try {
   const qp = new URLSearchParams(location.search);
   const override = qp.get('api');
