@@ -42,14 +42,14 @@ mysql -h localhost -u texplod -p texplods < texplod/server/db/schema.sql
 ```
 cd texplod/server
 npm run start
-# API listening on http://localhost:8080
+# API listening on https://decomind-texplod.onrender.com
 ```
 
 5) Open the frontend
 - Open `texplod/index.html` in your browser (double‑click or use a static server)
 - Admin dashboard: `texplod/admin.html`
 - If your API is not at localhost:8080, add `?api=YOUR_URL` to the page URL
-  - Example: `index.html?api=http://localhost:8080`
+  - Example: `index.html?api=https://decomind-texplod.onrender.com`
 
 ## Features
 - Products CRUD via Admin (create/update/delete + optional image upload)
@@ -70,7 +70,7 @@ npm run start
 
 ## Troubleshooting
 - Browser shows "Failed to fetch" from `/api/products`:
-  - Make sure the API is running: `curl http://localhost:8080/health`
+  - Make sure the API is running: `curl https://decomind-texplod.onrender.com/health`
   - If using a different host/port, open pages with `?api=http://host:port`
 - Products not all visible:
   - The Max Price slider filters the grid; it defaults to the highest price on load.

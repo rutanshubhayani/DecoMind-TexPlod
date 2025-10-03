@@ -303,7 +303,7 @@ class ProfileMenu extends HTMLElement {
 
         try {
             const apiBase = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                ? 'http://localhost:8080'
+                ? 'https://decomind-texplod.onrender.com'
                 : 'https://decomind-texplod.onrender.com';
             const response = await fetch(`${apiBase}/auth/update-profile`, {
                 method: 'PUT',

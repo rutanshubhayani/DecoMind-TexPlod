@@ -1,6 +1,6 @@
 // Get API URL from query parameter or use default
 const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? 'http://localhost:8080'
+  ? 'https://decomind-texplod.onrender.com'
   : 'https://decomind-texplod.onrender.com';
 
 // Check if user is logged in

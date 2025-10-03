@@ -34,12 +34,12 @@ mysql -h localhost -u texplod -p texplods < server/db/schema.sql
 ```
 cd server
 npm run start
-# API listening at http://localhost:8080
+# API listening at https://decomind-texplod.onrender.com
 ```
 
 ## 5) Verify API health (new terminal)
 ```
-curl http://localhost:8080/health
+curl https://decomind-texplod.onrender.com/health
 ```
 
 ## 6) Open the frontend
